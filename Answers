@@ -1,0 +1,38 @@
+Taylor Clark
+09/07/2017
+CS 4760
+
+Assignment #1: Answers
+
+1. 
+The final process to end always has a child ID of 0, meaning it is the final child and that from it, no other processes were spawned. At times, a process will display a parent of 1, meaning that by the time that process got to it's fprintf, its parent terminated without waiting for the child. This results in the orphan process being controlled by init, which has a pid of 1.
+ 
+2.
+-bash-4.2$ ./a.out 4
+
+ #1
+ Process ID: 23664
+ Parent ID: 23006
+ Child ID: 23665
+
+ #2
+ Process ID: 23665
+ Parent ID: 23664
+ Child ID: 23666
+
+ #3
+ Process ID: 23666
+ Parent ID: 1
+ Child ID: 23667
+
+ #4
+ Process ID: 23667
+ Parent ID: 23666
+ Child ID: 0
+
+#1 --> #2 --> #3 (parent has already terminated) --> #4
+ 
+3.
+The larger the number of processes created, the more likely a child is to become an orphan and be collected by init. The system seems to top out at max creatable processes somewhere about 900+ (for me at least.) In many instances, the child idea ended up being -1.
+
+4. 
