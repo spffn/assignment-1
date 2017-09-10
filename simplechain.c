@@ -66,6 +66,9 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 	
+	// sleep added as per the instructions of question #4
+	sleep(10);
+	
 	// Print the id of the current process before it terminates, as well as its parents id.
 	fprintf(stderr, "#%d | Process ID: %ld | Parent ID: %ld | Child ID: %ld\n", i, (long)getpid(), (long)getppid(), (long)childpid);
 	return 0;
