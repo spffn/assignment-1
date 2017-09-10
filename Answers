@@ -6,33 +6,17 @@ Assignment #1: Answers
 
 1. 
 The final process to end always has a child ID of 0, meaning it is the final child and that from it, no other processes were spawned. At times, a process will display a parent of 1, meaning that by the time that process got to it's fprintf, its parent terminated without waiting for the child. This results in the orphan process being controlled by init, which has a pid of 1.
+
+Because there tend to be such a minimal number of processes being forked off, their process IDs are linear, and they commonly end in the same order they were created. (IE, process #1 with id 10605 will end first; its child, process #2 with id 10606 will end second and so on.) At larger values, the final processes can end slightly more out of order.
  
 2.
--bash-4.2$ ./a.out 4
-
- #1
- Process ID: 23664
- Parent ID: 23006
- Child ID: 23665
-
- #2
- Process ID: 23665
- Parent ID: 23664
- Child ID: 23666
-
- #3
- Process ID: 23666
- Parent ID: 1
- Child ID: 23667
-
- #4
- Process ID: 23667
- Parent ID: 23666
- Child ID: 0
-
-#1 --> #2 --> #3 (parent has already terminated) --> #4
+-bash-4.2$ ./a.out -n4
+#1 | Process ID: 10578 | Parent ID: 2511 | Child ID: 10579
+#2 | Process ID: 10579 | Parent ID: 1 | Child ID: 10580
+#3 | Process ID: 10580 | Parent ID: 10579 | Child ID: 10581
+#4 | Process ID: 10581 | Parent ID: 1 | Child ID: 0
  
 3.
-The larger the number of processes created, the more likely a child is to become an orphan and be collected by init. The system seems to top out at max creatable processes somewhere about 900+ (for me at least.) In many instances, the child idea ended up being -1.
+The larger the number of processes created, the more likely a child is to become an orphan and be collected by init, especially processes that end later. I failed to find a point at which the system maxed out on processes it could create, but at times it did "break" when attempting to make values over 2000. In many instances of this "break", the final child id ended up being -1, rather than 0, a reason for which i could not find online.
 
 4. 
