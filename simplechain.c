@@ -41,7 +41,7 @@ int main (int argc, char *argv[]) {
 			// if no argument is given for n, print an error and end.
 			case ':':
 				perror(errstr);
-				fprintf(stderr, "-n requires an argument. \n", optopt);
+				fprintf(stderr, "-%s requires an argument. \n", optopt);
 				return 1;
 			// if an invalid option is caught, print that it is invalid and end
 			case '?':
@@ -66,8 +66,8 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 	
-	// sleep added as per the instructions of question #4
-	sleep(10);
+	// added wait 
+	wait();
 	
 	// Print the id of the current process before it terminates, as well as its parents id.
 	fprintf(stderr, "#%d | Process ID: %ld | Parent ID: %ld | Child ID: %ld\n", i, (long)getpid(), (long)getppid(), (long)childpid);
