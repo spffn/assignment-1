@@ -15,12 +15,12 @@ int main (int argc, char *argv[]) {
 	pid_t childpid = 0;
 	char errstr[50];
 	snprintf(errstr, sizeof errstr, "%s: Error: ", argv[0]);
-	// i for loop
+	// i and x for loops
 	// n for # of processes to create
 	// c for getopt
 	// k for # of times to loop final fprintf
 	// m for sleep in final loop
-	int i, n, c, k, m;
+	int i, x, n, c, k, m;
 	opterr = 0;	
 
 	// parse the command line arguments
@@ -34,7 +34,7 @@ int main (int argc, char *argv[]) {
 			// sets the number of times to loop final fprintf
 			// -k requires an argument to work
 			case 'k':
-				k = aoit(optarg);
+				k = atoi(optarg);
 				break;
 			// sets the time to sleep in final loop
 			// -m requires an argument to work
@@ -82,12 +82,13 @@ int main (int argc, char *argv[]) {
 	}
 	
 	// loop for the number of times given by the user
-	for (i = 0; i < k; i++){
+	for (x = 1; x <= k; x++){
+		// Prints as: 
+		// (# of k loop).(process #) | process ID | parent ID | child ID
+		fprintf(stderr, "%d.%d | Process ID: %ld | Parent ID: %ld | Child ID: %ld\n", x, i, (long)getpid(), (long)getppid(), (long)childpid);
+		
 		// sleep for the amount of time given by the user
 		sleep(m);
-		
-		// Print the id of the current process before it terminates, as well as its parents id.
-		fprintf(stderr, "#%d | Process ID: %ld | Parent ID: %ld | Child ID: %ld\n", i, (long)getpid(), (long)getppid(), (long)childpid);
 	}
 	return 0;
 }
