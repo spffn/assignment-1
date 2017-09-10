@@ -24,3 +24,33 @@ With sleep(10) added, I immediately had problems attempting to generate more tha
 Intrestingly, with sleep included, the number of orphan processes greatly increased in comparison to the prior versions of the code.
 
 5.
+Much like with question 4, the big throttle of this program appears to be the sleep value, which at any value greater than 0, limits the # of creatable processes to ~26 again. 
+
+K has a limiting effect on process creation when k is over 50 (that changes according to k's value, the greater is it, the less processes spawned) and a limit of ~40 when k is less than 50. However, unlike sleep, fork() never returns a negative number, so the child creation did not fail, but some other factor is affecting the creation. 
+K with varying values also creates the most interesting output, as unlike any run which includes sleep, the display order varies extensively. At times you will have items from loop k1 of process 2, displaying right before loop k28 process 1. 
+For example, from one of my runs: (k loop #).(process #)
+10.2 | Process ID: 26916 | Parent ID: 26915 | Child ID: 26917
+36.1 | Process ID: 26915 | Parent ID: 2511 | Child ID: 26916
+10.3 | Process ID: 26917 | Parent ID: 26916 | Child ID: 0
+11.2 | Process ID: 26916 | Parent ID: 26915 | Child ID: 26917
+37.1 | Process ID: 26915 | Parent ID: 2511 | Child ID: 26916
+The area of greatest different appears to be within the "middle" of the program, after process one has completed and commongly before the last process is in its last loops.
+
+6.
+With wait() implemented, just like with values of sleep above 1, the process creation is limited to 26, after which fork returns a negative value. Also interesting, the processes fprintf's display backwards, as the processes terminate in the reverse order of thir creation. This is because before a parent can terminate, it must wait for it's child to do so.
+
+7.
+For the most part, this change does not affect output and the order in which the processes do their prints. However, on occasion, on the final few processes, the printing order becomes jumbled as they both attempt to print at the same time. Thus, rather than a neat line of output for each process, the two's are mixed together, often in a manner which makes it difficult to tell who's info is whos, or newlines are printed at the incorrect time.
+Ex 1:
+#37 Process ID: 9849 Parent ID: 1 Child ID: 9850
+#38 Process ID: 9850 Parent ID: 1 Child ID: 9851
+#39 #40 Process ID: 9851 Parent ID: 9850 Child ID: 9852
+Process ID: 9852 Parent ID: 9851 Child ID: 0
+
+Ex 2:
+#197 Process ID: 10365 Parent ID: 1 Child ID: 10366
+#198 Process ID: 10366 Parent ID: 1 Child ID: 10367
+#199 #200 Process ID: 10367 Parent ID: 1 Child ID: 10368
+Process ID: 10368 Parent ID: 10367 Child ID: 0
+
+8.

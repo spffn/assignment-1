@@ -66,10 +66,11 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 	
-	// sleep added as per the instructions of question #4
-	sleep(10);
-	
-	// Print the id of the current process before it terminates, as well as its parents id.
-	fprintf(stderr, "#%d | Process ID: %ld | Parent ID: %ld | Child ID: %ld\n", i, (long)getpid(), (long)getppid(), (long)childpid);
+	// As per question 7, I split the single fprintf into four, with only the final
+	// fprintf including a newline at the end.
+	fprintf(stderr, "#%d ", i);
+	fprintf(stderr, "Process ID: %ld ", (long)getpid());
+	fprintf(stderr, "Parent ID: %ld ", (long)getppid());
+	fprintf(stderr, "Child ID: %ld\n", (long)childpid);
 	return 0;
 }
