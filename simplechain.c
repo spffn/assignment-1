@@ -15,16 +15,31 @@ int main (int argc, char *argv[]) {
 	pid_t childpid = 0;
 	char errstr[50];
 	snprintf(errstr, sizeof errstr, "%s: Error: ", argv[0]);
-	int i, n, c;
+	// i for loop
+	// n for # of processes to create
+	// c for getopt
+	// k for # of times to loop final fprintf
+	// m for sleep in final loop
+	int i, n, c, k, m;
 	opterr = 0;	
 
 	// parse the command line arguments
-	while ((c = getopt(argc, argv, ":n:h")) != -1) {
+	while ((c = getopt(argc, argv, ":n:hk:m:")) != -1) {
 		switch (c) {
 			// sets the number of processes to create
 			// -n requires an argument to work
 			case 'n':
 				n = atoi(optarg);
+				break;
+			// sets the number of times to loop final fprintf
+			// -k requires an argument to work
+			case 'k':
+				k = aoit(optarg);
+				break;
+			// sets the time to sleep in final loop
+			// -m requires an argument to work
+			case 'm':
+				m = atoi(optarg);
 				break;
 			// show help
 			case 'h':
@@ -38,10 +53,10 @@ int main (int argc, char *argv[]) {
 				fprintf(stderr, "\tShow help, valid options and required arguments. \n");
 				fprintf(stderr, "----------\n\n");
 				break;
-			// if no argument is given for n, print an error and end.
+			// if no argument is given for n/k/m, print an error and end.
 			case ':':
 				perror(errstr);
-				fprintf(stderr, "-n requires an argument. \n", optopt);
+				fprintf(stderr, "-%s requires an argument. \n", optopt);
 				return 1;
 			// if an invalid option is caught, print that it is invalid and end
 			case '?':
@@ -66,10 +81,13 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 	
-	// sleep added as per the instructions of question #4
-	sleep(10);
-	
-	// Print the id of the current process before it terminates, as well as its parents id.
-	fprintf(stderr, "#%d | Process ID: %ld | Parent ID: %ld | Child ID: %ld\n", i, (long)getpid(), (long)getppid(), (long)childpid);
+	// loop for the number of times given by the user
+	for (i = 0; i < k; i++){
+		// sleep for the amount of time given by the user
+		sleep(m);
+		
+		// Print the id of the current process before it terminates, as well as its parents id.
+		fprintf(stderr, "#%d | Process ID: %ld | Parent ID: %ld | Child ID: %ld\n", i, (long)getpid(), (long)getppid(), (long)childpid);
+	}
 	return 0;
 }
