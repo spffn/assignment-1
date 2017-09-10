@@ -1,5 +1,5 @@
 Taylor Clark
-09/07/2017
+09/10/2017
 CS 4760
 
 Assignment #1: Answers
@@ -17,6 +17,10 @@ Because there tend to be such a minimal number of processes being forked off, th
 #4 | Process ID: 10581 | Parent ID: 1 | Child ID: 0
  
 3.
-The larger the number of processes created, the more likely a child is to become an orphan and be collected by init, especially processes that end later. I failed to find a point at which the system maxed out on processes it could create, but at times it did "break" when attempting to make values over 2000. In many instances of this "break", the final child id ended up being -1, rather than 0, a reason for which i could not find online.
+The larger the number of processes created, the more likely a child is to become an orphan and be collected by init, especially processes that end later. I failed to find a point at which the system maxed out on processes it could create, but at times it did "break" when attempting to make values over 2000. In many instances of this "break", the final child id ended up being -1, which meant that the creation of the child process was unsuccesful.
 
 4. 
+With sleep(10) added, I immediately had problems attempting to generate more than 25 processes. Even just 30 processes was consistently failing. Much like in question #3, when trying to make over 25 processes, somewhere about 26, the final process' child id would become a -1 and the fork would stop.
+Intrestingly, with sleep included, the number of orphan processes greatly increased in comparison to the prior versions of the code.
+
+5.
