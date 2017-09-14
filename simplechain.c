@@ -76,15 +76,17 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 	
+	// read in the characters from stdin, one by one and storing them in an array
+	// mybuf, then adding a null term to the end of the array
 	int ch;
-	char mybuf[nchars+1];
+	char mybuf[nchars];
 	for(x = 0; x < nchars; x++){
 		ch = getchar();
 		mybuf[x] = ch;
 	}
-	mybuf[nchars+1] = '\0';
+	mybuf[nchars] = '\0';
 	
 	// Print the id of the current process and the contents of mybuf.
-	fprintf(stderr, "%ld : %s", (long)getpid(), mybuf);
+	fprintf(stderr, "%ld : %s\n", (long)getpid(), mybuf);
 	return 0;
 }
