@@ -15,16 +15,22 @@ int main (int argc, char *argv[]) {
 	pid_t childpid = 0;
 	char errstr[50];
 	snprintf(errstr, sizeof errstr, "%s: Error: ", argv[0]);
-	int i, n, c;
+	int i, x, n, c;
+	int nchars;
 	opterr = 0;	
 
 	// parse the command line arguments
-	while ((c = getopt(argc, argv, ":n:h")) != -1) {
+	while ((c = getopt(argc, argv, ":n:c:h")) != -1) {
 		switch (c) {
 			// sets the number of processes to create
 			// -n requires an argument to work
 			case 'n':
 				n = atoi(optarg);
+				break;
+			// get the value for nchars from user
+			// requires an argument to work
+			case 'c':
+				nchars = atoi(optarg);
 				break;
 			// show help
 			case 'h':
@@ -34,6 +40,10 @@ int main (int argc, char *argv[]) {
 				fprintf(stderr, "\tSets the number of child processes to spawn. \n");
 				fprintf(stderr, "\tMust be a number. \n");
 				fprintf(stderr, "\tex: -n 5 \n");
+				fprintf(stderr, "-c: \n");
+				fprintf(stderr, "\tSets the number of chars to read in. \n");
+				fprintf(stderr, "\tMust be a number. \n");
+				fprintf(stderr, "\tex: -c 20 \n");
 				fprintf(stderr, "-h: \n");
 				fprintf(stderr, "\tShow help, valid options and required arguments. \n");
 				fprintf(stderr, "----------\n\n");
@@ -41,7 +51,7 @@ int main (int argc, char *argv[]) {
 			// if no argument is given for n, print an error and end.
 			case ':':
 				perror(errstr);
-				fprintf(stderr, "-n requires an argument. \n", optopt);
+				fprintf(stderr, "-%s requires an argument. \n", optopt);
 				return 1;
 			// if an invalid option is caught, print that it is invalid and end
 			case '?':
@@ -66,10 +76,15 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 	
-	// sleep added as per the instructions of question #4
-	sleep(10);
+	int ch;
+	char mybuf[nchars+1];
+	for(x = 0; x < nchars; x++){
+		ch = getchar();
+		mybuf[x] = ch;
+	}
+	mybuf[nchars+1] = '\0';
 	
-	// Print the id of the current process before it terminates, as well as its parents id.
-	fprintf(stderr, "#%d | Process ID: %ld | Parent ID: %ld | Child ID: %ld\n", i, (long)getpid(), (long)getppid(), (long)childpid);
+	// Print the id of the current process and the contents of mybuf.
+	fprintf(stderr, "%ld : %s", (long)getpid(), mybuf);
 	return 0;
 }
